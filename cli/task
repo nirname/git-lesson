@@ -4,9 +4,7 @@
 
 current_folder=`dirname "$0"`
 
-if ! [ -d "$current_folder/tid" ]; then
-  echo 1 > "$current_folder/tid"
-fi
+$current_folder/init
 
 task_id=${1:-`cat "$current_folder/tid"`}
 tasks_folder="$current_folder/../tasks"

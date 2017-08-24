@@ -13,7 +13,7 @@ if ! [ -d $task_folder ]; then
   exit 1
 fi
 
-echo $1 > "$current_folder/tid"
+echo "$1" > "$current_folder/tid"
 # cat "$current_folder/tid"
 cat "$task_folder/task"
 
