@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# Инициализация, запуск первого задания
+
+current_folder=`dirname "$0"`
+
+if ! [ -d "$current_folder/tid" ]; then
+  echo 1 > "$current_folder/tid"
+fi
