@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 
-# Инициализация, запуск первого задания
+# Инициализация
 
-current_folder=`dirname "$0"`
+export CLI_FOLDER="$( cd "$( dirname "$0" )" && pwd )"
+export TID_FILE="$CLI_FOLDER/tid"
+export TASKS_FOLDER="$CLI_FOLDER/../tasks"
+export PATH="$PATH:$CLI_FOLDER"
 
-if ! [ -d "$current_folder/tid" ]; then
-  echo 1 > "$current_folder/tid"
-fi
+# if ! [ -d "$CLI_FOLDER/tid" ]; then
+#   echo 1 > "$CLI_FOLDER/tid"
+# fi
