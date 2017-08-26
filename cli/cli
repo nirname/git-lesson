@@ -1,0 +1,123 @@
+#!/usr/bin/env bash
+
+command=$1
+
+CLI_FOLDER="$( cd "$( dirname "$0" )" && pwd )"
+TASKS_FOLDER="$CLI_FOLDER/../tasks"
+PATH="$PATH:$CLI_FOLDER"
+
+TID_FILE="$CLI_FOLDER/tid"
+TID=${2:-`cat "$TID_FILE"`}
+TASK_FOLDER="$TASKS_FOLDER/$TID"
+
+case "$command" in
+
+help)
+  echo "Команды:
+
+    tasks      - Показать список задач
+    task [N]   - Показать текущую задачу или задачу с номером N
+    goto N     - Перейти к задаче N
+    next       - Перейти к следующей задаче
+    prev, back - Перейти к предыдущей задаче
+    restart    - Начать задание заново
+
+    help       - Показать подсказку"
+;;
+
+tasks)
+  echo "Список заданий"
+;;
+
+task)
+  echo "Текущее задание"
+  cat "$TASK_FOLDER/task"
+;;
+
+goto)
+  if ! [ -d $TASK_FOLDER ]; then
+    echo "Задача $TID is not found" >&2
+    echo "available tasks are" >&2
+    echo `ls -1 $TASKS_FOLDER` >&2
+    exit 1
+  fi
+
+  if ! [ -d "$CLI_FOLDER/tid" ]; then
+    echo 1 > "$CLI_FOLDER/tid"
+  fi
+
+  echo "Переход к задаче $TID"
+
+  echo $TID > "$TID_FILE"
+
+  $0 task
+;;
+
+next)
+  echo "Следующая задача"
+;;
+
+prev)
+  `$0 back`
+;;
+
+back)
+  echo "Следующая задача"
+;;
+
+restart)
+;;
+
+*)
+
+  echo "`$0 help`"
+  exit 1
+
+;;
+esac
+
+
+exit 0
+
+
+# Инициализация
+
+
+#!/usr/bin/env bash
+
+# Переключается между уроками
+
+if ! [ -d $task_folder ]; then
+  echo "task is not found" >&2
+  echo "available tasks are" >&2
+  echo `ls -1 $tasks_folder` >&2
+  exit 1
+fi
+
+echo "$1" > "$current_folder/tid"
+# cat "$current_folder/tid"
+cat "$task_folder/task"
+
+# echo
+# cp -a "$task_folder/." .
+
+
+
+# Выводит текущую задачу
+
+current_folder=`dirname "$0"`
+
+$current_folder/init
+
+task_id=${1:-`cat "$current_folder/tid"`}
+tasks_folder="$current_folder/../tasks"
+task_folder="$tasks_folder/$task_id"
+
+if ! [ -d "$task_folder" ]; then
+  echo "lesson '$task_id' is not found" >&2
+  echo "available lessons are" >&2
+  echo `ls -1 $tasks_folder` >&2
+  exit 1
+fi
+
+cat "$task_folder/task"

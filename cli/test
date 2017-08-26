@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-source "cli/init"
-
-echo $CLI_FOLDER
-echo $TID_FILE
-echo $TASKS_FOLDER

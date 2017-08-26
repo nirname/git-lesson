@@ -1,12 +1,1 @@
 #!/usr/bin/env bash
-
-# Инициализация
-
-export CLI_FOLDER="$( cd "$( dirname "$0" )" && pwd )"
-export TID_FILE="$CLI_FOLDER/tid"
-export TASKS_FOLDER="$CLI_FOLDER/../tasks"
-export PATH="$PATH:$CLI_FOLDER"
-
-# if ! [ -d "$CLI_FOLDER/tid" ]; then
-#   echo 1 > "$CLI_FOLDER/tid"
-# fi
