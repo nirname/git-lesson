@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# Инициализация
+
+CLI_FOLDER="$( cd "$( dirname "$0" )" && pwd )"
+TID_FILE="$CLI_FOLDER/tid"
+TASKS_FOLDER="$CLI_FOLDER/../tasks"
+PATH="$PATH:$CLI_FOLDER"
+
+# if ! [ -d "$CLI_FOLDER/tid" ]; then
+#   echo 1 > "$CLI_FOLDER/tid"
+# fi
