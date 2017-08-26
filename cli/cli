@@ -50,7 +50,7 @@ task)
 
 goto)
   check_tid
-  echo "Пережу к задаче $TID"
+  echo "Перехожу к задаче $TID"
 
   echo $TID > "$TID_FILE"
 
@@ -80,47 +80,4 @@ restart)
 ;;
 esac
 
-
 exit 0
-
-# Инициализация
-
-
-#!/usr/bin/env bash
-
-# Переключается между уроками
-
-# if ! [ -d $task_folder ]; then
-#   echo "task is not found" >&2
-#   echo "available tasks are" >&2
-#   echo `ls -1 $tasks_folder` >&2
-#   exit 1
-# fi
-
-# echo "$1" > "$current_folder/tid"
-# # cat "$current_folder/tid"
-# cat "$task_folder/task"
-
-# # echo
-# # cp -a "$task_folder/." .
-
-
-
-# # Выводит текущую задачу
-
-# current_folder=`dirname "$0"`
-
-# $current_folder/init
-
-# task_id=${1:-`cat "$current_folder/tid"`}
-# tasks_folder="$current_folder/../tasks"
-# task_folder="$tasks_folder/$task_id"
-
-# if ! [ -d "$task_folder" ]; then
-#   echo "lesson '$task_id' is not found" >&2
-#   echo "available lessons are" >&2
-#   echo `ls -1 $tasks_folder` >&2
-#   exit 1
-# fi
-
-# cat "$task_folder/task"
