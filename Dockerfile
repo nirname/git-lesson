@@ -3,5 +3,8 @@ FROM ubuntu
 RUN apt-get update && apt-get install -y git
 
 COPY cli /cli
+COPY tasks /tasks
 
-RUN /bin/bash /cli/init
+ENV PATH="/cli/:${PATH}"
+
+# RUN /bin/bash /cli/init

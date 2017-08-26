@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-cli goto $@
+cli tasks
