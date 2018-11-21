@@ -9,11 +9,13 @@ PATH="$PATH:$CLI_FOLDER"
 TID_FILE="$CLI_FOLDER/tid"
 TID=${2:-`cat "$TID_FILE"`}
 TASK_FOLDER="$TASKS_FOLDER/$TID"
+TASK_FILE="$TASKS_FOLDER/task"
 
 function check_tid {
-  if ! [ -d $TASK_FOLDER ]; then
-    echo "Задача $TID не найдена" >&2
+  if ! [ -f $TASK_FILE ]; then
+    echo "Нет текущего задания" >&2
     echo `$0 tasks` >&2
+    echo "Чтобы начать задание, выполните start с номером задачи"
     exit 1
   fi
 
@@ -45,7 +47,7 @@ task)
   check_tid
   echo "Задача $TID"
   echo
-  cat "$TASK_FOLDER/task"
+  cat "$TASK_FILE"
 ;;
 
 goto)
