@@ -16,8 +16,7 @@ COPY .gitconf /root/.gitconfig
 WORKDIR /tasks
 COPY bootstrap.sh .
 
-RUN chmod 700 ./bootstrap.sh && ./bootstrap.sh
-
+RUN chmod 700 ./bootstrap.sh && ./bootstrap.sh # &>/dev/null
 
 # ENV PATH="/cli/:${PATH}"
 
