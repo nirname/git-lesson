@@ -1,0 +1,14 @@
+[alias]
+  co = checkout
+  cm = commit
+  ci = commit
+  st = status
+  br = branch
+  mr = merge
+[core]
+  excludesfile = ~/.gitignore
+[user]
+  name = Student
+  email = student@example.com
+[push]
+  default = simple

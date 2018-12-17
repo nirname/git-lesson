@@ -106,23 +106,25 @@ else
 fi;
 
 # Set the terminal title and prompt.
-PS1="\[\033]0;\W\007\]"; # working directory base name
-PS1+="\[${bold}\]\n"; # newline
+PS1="\n\[\033]0;\W\007\]"; # working directory base name
+PS1+="\[${bold}\]";
+PS1+="\[${blue}\]";
+PS1+="You"
+PS1+="\[${white}\]";
+PS1+=" are at the ";
+PS1+="\[${orange}\]";
+PS1+="git-lesson";
+# PS1+="\[${white}\]";
 # PS1+="\[${userStyle}\]\u"; # username
 # PS1+="\[${white}\] at ";
 # PS1+="\[${hostStyle}\]\h"; # host
-# PS1+="\[${white}\] in ";
+PS1+="\[${white}\] in ";
 PS1+="\[${green}\]\w"; # working directory full path
 PS1+="\$(prompt_git \"\[${white}\] \[${violet}\][\" \"]\[${yellow}\]\")"; # Git repository details
 # PS1+="\n";
 PS1+="\[${white}\] \$ \[${reset}\]"; # `$` (and reset color)
 # export PS1;
 
-
-
 # export PS1="Семинар по Git ( h for help ) \w\$ $git_branch"
-
+clear
 echo "Добро пожаловать на семинар по Git"
-echo
-cli/cli help
-echo
