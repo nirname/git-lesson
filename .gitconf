@@ -8,7 +8,7 @@
 [core]
   excludesfile = ~/.gitignore
 [user]
-  name = Student
-  email = student@example.com
+  name = Programmer
+  email = programmer@example.com
 [push]
   default = simple

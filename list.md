@@ -1,62 +1,10 @@
-1. Сделать коммит
-
-  ```
-  git init .
-  echo 'code line' >> code
-  git add .
-  git commit -m 'Init'
-  #-----------------
-  echo 'code line' >> code
-  git commit -am 'Code'
-  ```
-
-1. Сделать слияние feature -> master, где в мастере есть коммит, посмотреть историю
-
-  ```
-  git init .
-  echo 'code line' >> code
-  git add .
-  git commit -m 'Init'
-  echo 'code line' >> code2
-  git commit -am 'New module'
-  git checkout -b feature
-  echo 'code line 2' >> code
-  git commit -am 'Feature implementation'
-  #-----------------
-  git checkout master
-  git merge feature
-  ```
-
-1. Сделать слияние feature -> master, где в мастере нет коммитов
-
-  ```
-  git init .
-  echo 'code line' >> code
-  git add .
-  git commit -m 'Init'
-  echo 'code line' >> code2
-  git commit -am 'New module'
-  git checkout -b feature
-  #-----------------
-  git checkout master
-  git merge feature
-  ```
-
-1. Сделать слияние feature -> master с дополнительным коммитом
-
-  ```
-  git init .
-  echo 'code line' >> code
-  git add .
-  git commit -m 'Init'
-  echo 'code line' >> code2
-  git commit -am 'New module'
-  git checkout -b feature
-  #-----------------
-  git checkout master
-  git merge --no-ff feature
-  ```
-
+1. ~Сделать коммит~
+1. ~Сделать слияние feature -> master, где в мастере есть коммит, посмотреть историю~
+1. ~Сделать слияние feature -> master, где в мастере нет коммитов~
+1. ~Случайно сделал коммит в мастер, а надо было в feature, перенести в feature~
+1. ~Случайно сделал несколько коммитов в мастер, а надо было в feature, перенести в feature~
+1. Сделать слияние feature -> master с дополнительным merge коммитом
+1. Начал делать фичу А, потом начал делать фичу Б, забыл переключиться в мастер. Перенести изменения только из Б
 1. Решить конфликт
 
   ```
@@ -81,9 +29,7 @@
 
 1. Octopus merge
 
-1. Случайно сделал коммит в мастер, не запушил, а надо было в feature, перенести в feature
 
-1. Сделал несколько коммитов в мастер, а надо было в feature, перенести в feature
 1. Случайно сделал коммиты в мастер и запушил, а надо было в feature, сделать ревёрт
 1. Сделал ревёрт в мастер, продолжаю работу над feature, хочу запушить изменения в репозитарий
 1. Начал делать фичу А, потом начал делать фичу Б, забыл переключиться в мастер, перенести изменения только из Б
