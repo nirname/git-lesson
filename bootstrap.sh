@@ -15,7 +15,7 @@ DESC='Сделать коммит'
 x(){}
 createTask x
 #-----------------
-DESC='Сделать слияние feature -> master, где в мастере нет коммитов'
+DESC='? Сделать слияние feature -> master, где в мастере нет коммитов'
 x(){
   echo 'line' >> code
   git add .
@@ -27,7 +27,7 @@ x(){
 }
 createTask x
 #-----------------
-DESC='Сделать слияние feature -> master, где в мастере есть коммит. Посмотреть историю'
+DESC='? Сделать слияние feature -> master, где в мастере есть коммит. Посмотреть историю'
 x(){
   echo 'line' >> code
   git add .
@@ -63,5 +63,24 @@ x(){
   seq 4 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Fix {}'"
 }
 createTask x
+#-----------------
+DESC='Начал делать фичу А, потом начал делать фичу Б, забыл переключиться в мастер. Перенести изменения только из Б'
+x(){
+  echo 'line' >> code
+  git add .
+  git commit -m 'Code'
+  git checkout -b feature-a
+  seq 4 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'For feature A {}'"
+  git checkout -b feature-b
+  seq 3 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'For feature B {}'"
+}
+createTask x
 # test $(git cat-file -t 3ea34ff5db454600f582fa93111b0e24e8ea639a) == commit
 # echo $?
+
+
+
+
+
+
+
