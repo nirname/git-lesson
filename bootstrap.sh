@@ -64,7 +64,9 @@ x(){
 }
 createTask x
 #-----------------
-DESC='Начал делать фичу А, потом начал делать фичу Б, забыл переключиться в мастер. Перенести изменения только из Б'
+DESC='Начал делать задачу А, потом задачу Б, забыл переключиться в мастер.
+Сделать так, чтобы ветка по задаче Б была из ветки мастер'
+
 x(){
   echo 'line' >> code
   git add .
@@ -75,6 +77,19 @@ x(){
   seq 3 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'For feature B {}'"
 }
 createTask x
+#-----------------
+DESC='Случайно сделал merge и push. Надо отменить merge'
+x(){
+  echo 'line' >> code
+  git add .
+  git commit -m 'Code'
+  git branch feature
+  seq 4 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Fix in master {}'"
+  git chekcout feature
+  seq 4 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Feature dev {}'"
+}
+#-----------------
+DESC='Не могу сделать pull, файлы в локальном репозитории'
 # test $(git cat-file -t 3ea34ff5db454600f582fa93111b0e24e8ea639a) == commit
 # echo $?
 
