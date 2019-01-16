@@ -1,0 +1,4 @@
+git_completion
+clean stopped images
+install vim
+test should return its status

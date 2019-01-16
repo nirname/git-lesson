@@ -5,6 +5,7 @@ createTask(){
   N=$(find . -maxdepth 1 -type d | wc -l)
   git init $N && cd $N
   echo $DESC >> task
+  echo "test" >> .gitignore
   git add .
   git commit -m 'Init'
   $1
@@ -41,7 +42,7 @@ x(){
   git checkout -b feature
   echo 'line' >> module
   git add .
-  git commit -m 'Module'
+  git commit -m 'Mogdule'
 }
 createTask x
 #-----------------
@@ -61,6 +62,10 @@ x(){
   git checkout feature
 }
 createTask x
+t(){
+  echo "test \$(git branch --merged master | grep -oE '[^[:alpha:]][^[:alpha:]]feature$' | sort -u | wc -l) == 1" >> test
+}
+createTest t
 #-----------------
 DESC='Случайно сделал коммит в мастер, а надо было в feature. Перенести в feature'
 x(){
