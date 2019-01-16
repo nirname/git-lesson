@@ -12,6 +12,7 @@ ENV LC_ALL en_US.UTF-8
 
 COPY .bashrc /root/
 COPY .gitconf /root/.gitconfig
+COPY .git_completion /root/.git_completion
 
 WORKDIR /tasks
 COPY bootstrap.sh .
