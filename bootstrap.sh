@@ -5,27 +5,33 @@ createTask(){
   N=$(find . -maxdepth 1 -type d | wc -l)
   git init $N && cd $N
   echo $DESC >> task
-  echo "#!/usr/bin/env bash"
-  echo $TEST >> test
+  git add .
+  git commit -m 'Init'
+  $1
+  cd ../
+}
+
+createTest(){
+  F=$(find . -maxdepth 1 -type d | sort | tail -1)
+  cd $F
+  echo "#!/usr/bin/env bash" >> test
+  $1
   echo 'if [ $? == 0 ]; then
     echo "ok"
   else
     echo "fail"
   fi' >> test
   chmod 744 test
-  git add .
-  git commit -m 'Init'
-  $1
   cd ../
-}
-createTest(){
-  F=$(find . -maxdepth 1 -type d | sort | tail -1)
 }
 #-----------------
 DESC='Сделать коммит'
-TEST="test \$(git rev-list `git rev-parse HEAD`..master | wc -l) == 1"
 x(){}
 createTask x
+t(){
+  echo "test \$(git rev-list `git rev-parse HEAD`..master | wc -l) == 1" >> test
+}
+createTest t
 #-----------------
 DESC='? Сделать слияние feature -> master, где в мастере нет коммитов'
 x(){
