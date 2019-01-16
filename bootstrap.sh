@@ -17,11 +17,14 @@ createTest(){
   cd $F
   echo "#!/usr/bin/env bash" >> test
   $1
-  echo 'if [ $? == 0 ]; then
+  echo '
+  res=$?
+  if [ $res -eq 0 ]; then
     echo "ok"
   else
     echo "fail"
-  fi' >> test
+  fi
+  exit $res' >> test
   chmod 744 test
   cd ../
 }
