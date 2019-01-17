@@ -66,7 +66,7 @@ x(){
   git checkout -b feature
   echo 'line' >> module
   git add .
-  git commit -m 'Mogdule in branch'
+  git commit -m 'Module in branch'
 }
 createTask x
 t(){
@@ -75,24 +75,32 @@ t(){
 createTest t
 #-----------------
 DESC='Случайно сделал коммит в мастер, а надо было в feature. Перенести в feature'
+
 x(){
-  echo 'line' >> code
+  git branch feature
   git add .
   git commit -m 'Code'
-  echo 'line from feature' >> code
+  echo 'line' >> code
+  echo 'line for feature' >> code
   git add .
   git commit -m 'Feature'
 }
 createTask x
+t(){
+  echo "git rev-list master..feature | grep -Fxq `git rev-parse master`" >> test
+}
+createTest t
 #-----------------
 DESC='Случайно сделал несколько коммитов в мастер, а надо было в feature. Перенести в feature'
 x(){
   echo 'line' >> code
   git add .
   git commit -m 'Code'
-  seq 4 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Fix {}'"
+  seq 4 | xargs -I{} bash -c "echo 'line {} for feature' >> code; git add .; git commit -m 'Fix {}'"
 }
 createTask x
+t(){}
+createTest t
 #-----------------
 DESC='Начал делать задачу А, потом задачу Б, забыл переключиться в мастер.
 Сделать так, чтобы ветка по задаче Б была из ветки мастер'
