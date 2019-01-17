@@ -77,13 +77,13 @@ createTest t
 DESC='Случайно сделал коммит в мастер, а надо было в feature. Перенести в feature'
 
 x(){
-  git branch feature
-  git add .
-  git commit -m 'Code'
   echo 'line' >> code
+  git add .
+  git commit -m 'Code in master'
+  git branch feature
   echo 'line for feature' >> code
   git add .
-  git commit -m 'Feature'
+  git commit -m 'Code in Feature'
 }
 createTask x
 t(){
