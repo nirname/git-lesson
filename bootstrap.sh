@@ -37,36 +37,40 @@ t(){
 }
 createTest t
 #-----------------
-DESC='? Сделать слияние feature -> master, где в мастере нет коммитов'
-x(){
-  echo 'line' >> code
-  git add .
-  git commit -m 'Code'
-  git checkout -b feature
-  echo 'line' >> module
-  git add .
-  git commit -m 'Mogdule'
-}
-createTask x
-#-----------------
 DESC='? Сделать слияние feature -> master, где в мастере есть коммит. Посмотреть историю'
 x(){
   echo 'line' >> code
   git add .
-  git commit -m 'Code'
+  git commit -m 'Code in master'
   git checkout -b feature
   echo 'line' >> module
   git add .
-  git commit -m 'Module'
+  git commit -m 'Module in branch'
   git checkout master
   echo 'line' >> code
   git add .
-  git commit -m 'Development'
+  git commit -m 'Development in master'
   git checkout feature
 }
 createTask x
 t(){
   echo "test \$(git branch --merged master | grep -oE '[^[:alpha:]][^[:alpha:]]feature$' | sort -u | wc -l) == 1" >> test
+}
+createTest t
+#-----------------
+DESC='Сделать слияние feature -> master, где в мастере нет коммитов, отменить merge, сделать другой'
+x(){
+  echo 'line' >> code
+  git add .
+  git commit -m 'Code in master'
+  git checkout -b feature
+  echo 'line' >> module
+  git add .
+  git commit -m 'Mogdule in branch'
+}
+createTask x
+t(){
+  echo "test \$(git rev-list --merges --count master~1..master) == 1" >> test
 }
 createTest t
 #-----------------
