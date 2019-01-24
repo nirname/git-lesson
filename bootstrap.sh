@@ -1,8 +1,8 @@
-# N=$(($(find . -maxdepth 1 -type d | wc -l) + 0))
+N=0
 #-----------------
 DESC='Задание'
-createTask(){
-  N=$(find . -maxdepth 1 -type d | wc -l)
+create_task(){
+  N=$((N+1))
   git init $N && cd $N
   echo $DESC >> task
   echo "test" >> .gitignore
@@ -12,9 +12,13 @@ createTask(){
   cd ../
 }
 
-createTest(){
-  F=$(find . -maxdepth 1 -type d | sort | tail -1)
-  cd $F
+create_remote(){
+  git init /tasks/.$N --bare
+  git remote add $1 /tasks/.$N
+}
+
+create_test(){
+  cd $N
   echo "#!/usr/bin/env bash" >> test
   $1
   echo '
@@ -31,13 +35,13 @@ createTest(){
 #-----------------
 DESC='Сделать коммит'
 x(){}
-createTask x
+create_task x
 t(){
   echo "test \$(git rev-list `git rev-parse HEAD`..master | wc -l) == 1" >> test
 }
-createTest t
+create_test t
 #-----------------
-DESC='? Сделать слияние feature -> master, где в мастере есть коммит. Посмотреть историю'
+DESC='Сделать слияние feature -> master, где в мастере есть коммит. Посмотреть историю.'
 x(){
   echo 'line' >> code
   git add .
@@ -49,16 +53,17 @@ x(){
   git checkout master
   echo 'line' >> code
   git add .
-  git commit -m 'Development in master'
+  git commit -m 'New changes in master'
   git checkout feature
 }
-createTask x
+create_task x
 t(){
   echo "test \$(git branch --merged master | grep -oE '[^[:alpha:]][^[:alpha:]]feature$' | sort -u | wc -l) == 1" >> test
 }
-createTest t
+create_test t
 #-----------------
-DESC='Сделать слияние feature -> master, где в мастере нет коммитов, отменить merge, сделать другой'
+DESC='Сделать слияние feature -> master, где в мастере нет коммитов.
+Посмотреть историю, отменить merge, сделать merge с дополнительным коммитом.'
 x(){
   echo 'line' >> code
   git add .
@@ -68,11 +73,11 @@ x(){
   git add .
   git commit -m 'Module in branch'
 }
-createTask x
+create_task x
 t(){
   echo "test \$(git rev-list --merges --count master~1..master) == 1" >> test
 }
-createTest t
+create_test t
 #-----------------
 DESC='Случайно сделал коммит в мастер, а надо было в feature. Перенести в feature'
 
@@ -83,24 +88,29 @@ x(){
   git branch feature
   echo 'line for feature' >> code
   git add .
-  git commit -m 'Code in Feature'
+  git commit -m 'Code in feature'
 }
-createTask x
+create_task x
 t(){
   echo "git rev-list master..feature | grep -Fxq `git rev-parse master`" >> test
 }
-createTest t
+create_test t
 #-----------------
 DESC='Случайно сделал несколько коммитов в мастер, а надо было в feature. Перенести в feature'
 x(){
   echo 'line' >> code
   git add .
   git commit -m 'Code'
+  create_remote origin
+  git push -u origin master
+  git branch feature
   seq 4 | xargs -I{} bash -c "echo 'line {} for feature' >> code; git add .; git commit -m 'Fix {}'"
 }
-createTask x
-t(){}
-createTest t
+create_task x
+t(){
+  echo "git rev-list master..feature | grep -Fxq `git rev-parse master`" >> test
+}
+create_test t
 #-----------------
 DESC='Начал делать задачу А, потом задачу Б, забыл переключиться в мастер.
 Сделать так, чтобы ветка по задаче Б была из ветки мастер'
@@ -114,7 +124,7 @@ x(){
   git checkout -b feature-b
   seq 3 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'For feature B {}'"
 }
-createTask x
+create_task x
 #-----------------
 DESC='Случайно сделал merge и push. Надо отменить merge'
 x(){
