@@ -1,6 +1,11 @@
 N=0
 #-----------------
 DESC='Задание'
+create_remote(){
+  git init /tasks/.$N --bare
+  git remote add $1 /tasks/.$N
+}
+
 create_task(){
   N=$((N+1))
   git init $N && cd $N
@@ -8,13 +13,10 @@ create_task(){
   echo "test" >> .gitignore
   git add .
   git commit -m 'Init'
+  create_remote origin
+  git push -u origin master
   $1
   cd ../
-}
-
-create_remote(){
-  git init /tasks/.$N --bare
-  git remote add $1 /tasks/.$N
 }
 
 create_test(){
@@ -101,7 +103,6 @@ x(){
   echo 'line' >> code
   git add .
   git commit -m 'Code'
-  create_remote origin
   git push -u origin master
   git branch feature
   seq 4 | xargs -I{} bash -c "echo 'line {} for feature' >> code; git add .; git commit -m 'Fix {}'"
