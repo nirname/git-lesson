@@ -112,7 +112,7 @@ t(){
 }
 create_test t
 #-----------------
-DESC='Начал делать задачу А, потом задачу Б, забыл переключиться в мастер.
+DESC='Начал делать задачу Б прямо из ветки А, забыл переключиться в мастер.
 Сделать так, чтобы ветка по задаче Б была из ветки мастер'
 
 x(){
@@ -120,9 +120,13 @@ x(){
   git add .
   git commit -m 'Code'
   git checkout -b feature-a
-  seq 4 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'For feature A {}'"
+  echo 'module_a.call()' >> code
+  git commit -am 'Feature A call'
+  seq 4 | xargs -I{} bash -c "echo 'line {}' >> module_a; git add .; git commit -m 'For feature A {}'"
   git checkout -b feature-b
-  seq 3 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'For feature B {}'"
+  echo 'module_b.call()' >> code
+  git commit -am 'Feature B call'
+  seq 3 | xargs -I{} bash -c "echo 'line {}' >> module_b; git add .; git commit -m 'For feature B {}'"
 }
 create_task x
 #-----------------
