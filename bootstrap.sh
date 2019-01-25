@@ -1,10 +1,12 @@
+#!/usr/bin/env bash
+
 N=0
 #-----------------
 DESC='Задание'
 create_remote(){
-  mkdir -p /.repo
-  git init /.repo/$N --bare
-  git remote add $1 /.repo/$N
+  mkdir -p /repo
+  git init /repo/$N --bare
+  git remote add $1 /repo/$N
 }
 
 create_task(){
@@ -37,20 +39,12 @@ create_test(){
 }
 #-----------------
 DESC='Сделать коммит.'
-x(){}
+x(){ :; }
 create_task x
 t(){
   echo "test \$(git rev-list `git rev-parse HEAD`..master | wc -l) == 1" >> test
 }
 create_test t
-#-----------------
-DESC='Сделал локальный коммит с неправильным описанием, надо поправить.'
-x(){
-  echo 'line' >> code
-  git add .
-  git commit -m 'wROnG Msg'
-}
-create_task x
 #-----------------
 DESC='Сделать слияние feature -> master, где в мастере есть коммит. Посмотреть историю.'
 x(){
@@ -90,7 +84,8 @@ t(){
 }
 create_test t
 #-----------------
-DESC='Случайно сделал коммит в мастер, а надо было в feature. Перенести в feature.'
+DESC='Случайно сделал коммит в мастер, а надо было в feature.
+Перенести в feature, убрать из мастера'
 x(){
   echo 'line' >> code
   git add .
@@ -140,7 +135,7 @@ x(){
 }
 create_task x
 #-----------------
-DESC='Случайно сделал merge и push. Надо отменить merge.'
+DESC='TODO: Случайно сделал merge и push. Надо отменить merge.'
 x(){
   echo 'line' >> code
   git add .
@@ -152,6 +147,22 @@ x(){
   seq 4 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'For feature {}'"
   git checkout master
   git merge --no-ff feature
+  git push -u origin master
+}
+#-----------------
+DESC='Сделал локальный коммит с неправильным описанием, надо поправить.'
+x(){
+  echo 'line' >> code
+  git add .
+  git commit -m 'wROnG Msg'
+}
+create_task x
+#-----------------
+DESC='TODO: Сделал коммит, запушил, надо переименовать'
+x(){
+  echo 'line' >> code
+  git add .
+  git commit -m 'wROnG Msg'
   git push -u origin master
 }
 #-----------------
@@ -172,7 +183,7 @@ x(){
   git checkout master
 }
 create_task x
-t(){}
+t(){ :; }
 #-----------------
 DESC='Запушили пароли в репозитарий, надо почистить историю.'
 x(){
@@ -205,7 +216,43 @@ ach5jaiG" >> passwords
 }
 create_task x
 #-----------------
+DESC='Случайно сделал reset --hard, спасти что было.'
+x(){
+  echo 'fix' >> code; git add .; git commit -m 'Fix'
+  git push -u origin master
+  git checkout -b feature
+  seq 3 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Wip {}'"
+  # git reset --hard HEAD~3
+  # git checkout master
+  # git br -D feature
+}
+create_task x
+#-----------------
+DESC='Неправильный автоматический merge'
+x(){
+  echo '#!/usr/bin/env bash
+func5(){ echo 5; }
+func2(){ echo 2; }
+func1(){ echo 1; }
+func4(){ echo 4; }
+func3(){ echo 3; }
 
+func3
+func1
+func4
+func2
+func5
+' >> script
+  chmod 744 script
+  git add .
+  git cm -m 'Script'
+  git push -u origin master
+}
+create_task x
+cp -r /tasks/$N /tasks/$N-bob
+mv /tasks/$N /tasks/$N-alice
+# hello(){ echo 'hello' }
+# hello(){ echo 'hell' }
 # echo "`git rev-parse master` `git rev-parse module-1` `git rev-parse module-2` `git rev-parse module-3`"
 # if [ "valid" = "valid" ]; then echo 't'; fi
 # git show -s --pretty=%P <commit>
@@ -213,10 +260,3 @@ create_task x
 # DESC='Не могу сделать pull, файлы в локальном репозитории.'
 # test $(git cat-file -t 3ea34ff5db454600f582fa93111b0e24e8ea639a) == commit
 # echo $?
-
-
-
-
-
-
-
