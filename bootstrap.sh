@@ -91,7 +91,6 @@ t(){
 create_test t
 #-----------------
 DESC='Случайно сделал коммит в мастер, а надо было в feature. Перенести в feature.'
-
 x(){
   echo 'line' >> code
   git add .
@@ -175,7 +174,7 @@ x(){
 create_task x
 t(){}
 #-----------------
-DESC='Запушил пароли в репозитарий, надо почистить историю.'
+DESC='Запушили пароли в репозитарий, надо почистить историю.'
 x(){
   seq 1 7 | xargs -I{} bash -c "echo 'code-line-{}' >> code; git add .; git commit -m 'Wip {}'"
   echo "Yai8Ahg3
@@ -199,9 +198,13 @@ doo2eiVi
 atahph3H
 ach5jaiG" >> passwords
   seq 16 20 | xargs -I{} bash -c "echo 'code-line-{}' >> code; git add .; git commit -m 'Wip {}'"
+  # git rm passwords
+  # git add .
+  # git cm -m 'Removed passwords'
   git push -u origin master
 }
 create_task x
+#-----------------
 
 # echo "`git rev-parse master` `git rev-parse module-1` `git rev-parse module-2` `git rev-parse module-3`"
 # if [ "valid" = "valid" ]; then echo 't'; fi
