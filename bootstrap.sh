@@ -36,13 +36,21 @@ create_test(){
   cd ../
 }
 #-----------------
-DESC='Сделать коммит'
+DESC='Сделать коммит.'
 x(){}
 create_task x
 t(){
   echo "test \$(git rev-list `git rev-parse HEAD`..master | wc -l) == 1" >> test
 }
 create_test t
+#-----------------
+DESC='Локально сделал коммит с неправильным описанием, надо поправить.'
+x(){
+  echo 'line' >> code
+  git add .
+  git commit -m 'wROnG Msg'
+}
+create_task x
 #-----------------
 DESC='Сделать слияние feature -> master, где в мастере есть коммит. Посмотреть историю.'
 x(){
@@ -82,7 +90,7 @@ t(){
 }
 create_test t
 #-----------------
-DESC='Случайно сделал коммит в мастер, а надо было в feature. Перенести в feature'
+DESC='Случайно сделал коммит в мастер, а надо было в feature. Перенести в feature.'
 
 x(){
   echo 'line' >> code
@@ -99,7 +107,7 @@ t(){
 }
 create_test t
 #-----------------
-DESC='Случайно сделал несколько коммитов в мастер, а надо было в feature. Перенести в feature'
+DESC='Случайно сделал несколько коммитов в мастер, а надо было в feature. Перенести в feature.'
 x(){
   echo 'line' >> code
   git add .
@@ -114,8 +122,8 @@ t(){
 }
 create_test t
 #-----------------
-DESC='Начал делать задачу Б прямо из ветки А, забыл переключиться в мастер.
-Сделать так, чтобы ветка по задаче Б была из ветки мастер'
+DESC='Начал делать задачу Б прямо из ветки А, забыл переключиться в master.
+Сделать так, чтобы ветка по задаче Б была из ветки master'
 
 x(){
   echo 'line' >> code
@@ -132,18 +140,22 @@ x(){
 }
 create_task x
 #-----------------
-DESC='Случайно сделал merge и push. Надо отменить merge'
+DESC='Случайно сделал merge и push. Надо отменить merge.'
 x(){
   echo 'line' >> code
   git add .
   git commit -m 'Code'
   git branch feature
   seq 4 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Fix in master {}'"
+  git push -u origin master
   git chekcout feature
-  seq 4 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Feature dev {}'"
+  seq 4 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'For feature {}'"
+  git checkout master
+  git merge --no-ff feature
+  git push -u origin master
 }
 #-----------------
-DESC='Не могу сделать pull, файлы в локальном репозитории'
+DESC='Не могу сделать pull, файлы в локальном репозитории.'
 # test $(git cat-file -t 3ea34ff5db454600f582fa93111b0e24e8ea639a) == commit
 # echo $?
 
