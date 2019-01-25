@@ -2,8 +2,9 @@ N=0
 #-----------------
 DESC='Задание'
 create_remote(){
-  git init /tasks/.$N --bare
-  git remote add $1 /tasks/.$N
+  mkdir -p /.repo
+  git init /.repo/$N --bare
+  git remote add $1 /.repo/$N
 }
 
 create_task(){
