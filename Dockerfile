@@ -21,4 +21,4 @@ RUN chmod 700 ./bootstrap.sh && ./bootstrap.sh && rm ./bootstrap.sh # &>/dev/nul
 
 # ENV PATH="/cli/:${PATH}"
 
-ENTRYPOINT /bin/bash
+# ENTRYPOINT /bin/bash
