@@ -44,7 +44,7 @@ t(){
 }
 create_test t
 #-----------------
-DESC='Локально сделал коммит с неправильным описанием, надо поправить.'
+DESC='Сделал локальный коммит с неправильным описанием, надо поправить.'
 x(){
   echo 'line' >> code
   git add .
@@ -156,7 +156,58 @@ x(){
   git push -u origin master
 }
 #-----------------
-DESC='Не могу сделать pull, файлы в локальном репозитории.'
+DESC='Неправильно назвал ветку и поместил в репозиторий.
+Переименовать удалённую ветку в task-456.'
+x(){
+  git checkout -b task-123
+  echo 'task 456' >> code
+  git add .
+  git commit -m 'Task 456'
+  git push -u origin task-123
+}
+create_task x
+#-----------------
+DESC='Слить несколько веток в одну одним коммитом.'
+x(){
+  seq 3 | xargs -I{} bash -c "git checkout master; git checkout -b module-{}; echo 'module_{}' >> module_{}; git add .; git commit -m 'Module {}'"
+  git checkout master
+}
+create_task x
+t(){}
+#-----------------
+DESC='Запушил пароли в репозитарий, надо почистить историю.'
+x(){
+  seq 1 7 | xargs -I{} bash -c "echo 'code-line-{}' >> code; git add .; git commit -m 'Wip {}'"
+  echo "Yai8Ahg3
+Eo4faika
+theewama
+Sahthais
+lee9Guuj
+airooy5A
+ieGhio1j
+Shie0ahr" > passwords
+  git add . passwords
+  seq 8 15 | xargs -I{} bash -c "echo 'code-line-{}' >> code; git add .; git commit -m 'Wip {}'"
+  echo "mee4ePei
+AeQu3aeR
+Eiz9zebu
+ieyai2Ao
+OhboGh1e
+awakieM4
+No8iepoo
+doo2eiVi
+atahph3H
+ach5jaiG" >> passwords
+  seq 16 20 | xargs -I{} bash -c "echo 'code-line-{}' >> code; git add .; git commit -m 'Wip {}'"
+  git push -u origin master
+}
+create_task x
+
+# echo "`git rev-parse master` `git rev-parse module-1` `git rev-parse module-2` `git rev-parse module-3`"
+# if [ "valid" = "valid" ]; then echo 't'; fi
+# git show -s --pretty=%P <commit>
+#-----------------
+# DESC='Не могу сделать pull, файлы в локальном репозитории.'
 # test $(git cat-file -t 3ea34ff5db454600f582fa93111b0e24e8ea639a) == commit
 # echo $?
 
