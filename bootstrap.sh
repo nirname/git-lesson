@@ -222,9 +222,25 @@ x(){
   git push -u origin master
   git checkout -b feature
   seq 3 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Wip {}'"
-  # git reset --hard HEAD~3
-  # git checkout master
-  # git br -D feature
+  git reset --hard master
+  git checkout master
+  git br -D feature
+}
+create_task x
+#-----------------
+DESC='Добавил изменения в stash, и очистил, как вернуть что было.'
+x(){
+  git checkout -b feature
+  echo 'work-in-progress' >> code
+  git add .
+  git stash
+  git co master
+  echo 'fix' >> code
+  git add .
+  git commit -m Fix
+  git push
+  git checkout feature
+  # git stash clear
 }
 create_task x
 #-----------------
