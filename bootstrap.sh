@@ -84,8 +84,7 @@ t(){
 }
 create_test t
 #-----------------
-DESC='Случайно сделал коммит в мастер, а надо было в feature.
-Перенести в feature, убрать из мастера'
+DESC='Случайно сделал коммит в мастер, а надо было в feature. Перенести в feature.'
 x(){
   echo 'line' >> code
   git add .
@@ -102,7 +101,7 @@ t(){
 create_test t
 #-----------------
 DESC='Случайно сделал несколько коммитов в мастер, а надо было в feature.
-Перенести все Fix коммиты в feature, при этом убрать их из мастера.'
+Перенести все fix коммиты в feature.'
 x(){
   echo 'line' >> code
   git add .
@@ -177,14 +176,6 @@ x(){
 }
 create_task x
 #-----------------
-DESC='Слить несколько веток в одну одним коммитом.'
-x(){
-  seq 3 | xargs -I{} bash -c "git checkout master; git checkout -b module-{}; echo 'module_{}' >> module_{}; git add .; git commit -m 'Module {}'"
-  git checkout master
-}
-create_task x
-t(){ :; }
-#-----------------
 DESC='Запушили пароли в репозитарий, надо почистить историю.'
 x(){
   seq 1 7 | xargs -I{} bash -c "echo 'code-line-{}' >> code; git add .; git commit -m 'Wip {}'"
@@ -216,33 +207,13 @@ ach5jaiG" >> passwords
 }
 create_task x
 #-----------------
-DESC='Случайно сделал reset --hard, спасти что было.'
+DESC='Слить несколько веток в одну одним коммитом.'
 x(){
-  echo 'fix' >> code; git add .; git commit -m 'Fix'
-  git push -u origin master
-  git checkout -b feature
-  seq 3 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Wip {}'"
-  git reset --hard master
+  seq 3 | xargs -I{} bash -c "git checkout master; git checkout -b module-{}; echo 'module_{}' >> module_{}; git add .; git commit -m 'Module {}'"
   git checkout master
-  git br -D feature
 }
 create_task x
-#-----------------
-DESC='Добавил изменения в stash, и очистил, как вернуть что было.'
-x(){
-  git checkout -b feature
-  echo 'work-in-progress' >> code
-  git add .
-  git stash
-  git co master
-  echo 'fix' >> code
-  git add .
-  git commit -m Fix
-  git push
-  git checkout feature
-  # git stash clear
-}
-create_task x
+t(){ :; }
 #-----------------
 DESC='Неправильный автоматический merge'
 x(){
@@ -273,6 +244,34 @@ mv /tasks/$N /tasks/$N-alice
 # if [ "valid" = "valid" ]; then echo 't'; fi
 # git show -s --pretty=%P <commit>
 #-----------------
+DESC='Случайно сделал reset --hard, спасти что было.'
+x(){
+  echo 'fix' >> code; git add .; git commit -m 'Fix'
+  git push -u origin master
+  git checkout -b feature
+  seq 3 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Wip {}'"
+  git reset --hard master
+  git checkout master
+  git br -D feature
+}
+create_task x
+#-----------------
+DESC='Добавил изменения в stash, и очистил, как вернуть что было.'
+x(){
+  git checkout -b feature
+  echo 'work-in-progress' >> code
+  git add .
+  git stash
+  git co master
+  echo 'fix' >> code
+  git add .
+  git commit -m Fix
+  git push
+  git checkout feature
+  # git stash clear
+}
+create_task x
+
 # DESC='Не могу сделать pull, файлы в локальном репозитории.'
 # test $(git cat-file -t 3ea34ff5db454600f582fa93111b0e24e8ea639a) == commit
 # echo $?
