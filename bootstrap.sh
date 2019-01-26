@@ -244,9 +244,14 @@ mv /tasks/$N /tasks/$N-alice
 # if [ "valid" = "valid" ]; then echo 't'; fi
 # git show -s --pretty=%P <commit>
 #-----------------
+DESC='Понял, что всё что было сделано локально - ужас. Вернуть до состояния удалённого репозитория'
+x(){
+  echo 'work' >> code; git add .; git commit -m 'Work'
+}
+#-----------------
 DESC='Случайно сделал reset --hard, спасти что было.'
 x(){
-  echo 'fix' >> code; git add .; git commit -m 'Fix'
+  echo 'work' >> code; git add .; git commit -m 'Fix'
   git push -u origin master
   git checkout -b feature
   seq 3 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Wip {}'"
@@ -271,7 +276,10 @@ x(){
   # git stash clear
 }
 create_task x
-
-# DESC='Не могу сделать pull, файлы в локальном репозитории.'
+#-----------------
+DESC='Не могу сделать pull, файлы в локальном репозитории.'
+x(){
+  git che
+}
 # test $(git cat-file -t 3ea34ff5db454600f582fa93111b0e24e8ea639a) == commit
 # echo $?
