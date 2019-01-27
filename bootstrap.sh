@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-N=0
+N=9
 #-----------------
 DESC='Задание'
 create_remote(){
@@ -236,6 +236,9 @@ func5
   git push -u origin master
 }
 create_task x
+
+# git config user.name 'bob'
+# git config user.email 'bob'
 cp -r /tasks/$N /tasks/$N-bob
 mv /tasks/$N /tasks/$N-alice
 # hello(){ echo 'hello' }
@@ -277,9 +280,44 @@ x(){
 }
 create_task x
 #-----------------
-DESC='Не могу сделать pull, файлы в локальном репозитории.'
+DESC='Случайно сделал merge в master, и push. Сделать revert.'
 x(){
-  git che
+  git checkout -b feature
+  seq 3 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Feature {}'"
+  git checkout master
+  git merge --no-ff feature
+  git push -u origin master
 }
+create_task x
+#-----------------
+DESC='Сделал revert в мастер, продолжаю работу, хочу снова сделать merge.'
+x(){
+  git checkout -b feature
+  seq 3 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Feature {}'"
+  git checkout master
+  git merge --no-ff feature
+  git push -u origin master
+  git checkout -b revert-feature
+  git revert -m 1 master --no-edit master
+  git checkout master
+  git merge --no-ff revert-feature
+  git push -u origin master
+  git checkout feature
+  seq 4 5 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Feature {}'"
+}
+create_task x
+#-----------------
+DESC='Случайно сделал коммиты в мастер и запушил, а надо было в feature, сделать revert.'
+x(){
+  # git clone /repo/$N /tmp/
+  seq 3 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Feature {}'"
+  git push -u origin master
+}
+create_task x
+#-----------------
+# DESC='Не могу сделать pull, файлы в локальном репозитории.'
+# x(){
+#   git che
+# }
 # test $(git cat-file -t 3ea34ff5db454600f582fa93111b0e24e8ea639a) == commit
 # echo $?

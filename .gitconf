@@ -1,5 +1,5 @@
 [alias]
-  l = log --pretty=format:\"%C(yellow)%h%C(reset) | %s %C(red)[%aN]%C(green)%d%C(reset)\" --decorate --graph
+  l = log --pretty=format:\"%C(yellow)%h%C(reset) | %s %C(red)[%aN]%C(green)%d%C(reset)\" --decorate --graph --all
   co = checkout
   cm = commit
   ci = commit
