@@ -12,7 +12,7 @@ create_remote(){
 create_task(){
   N=$((N+1))
   git init $N && cd $N
-  echo $DESC >> task
+  echo "$N. $DESC" >> task
   echo "test" >> .gitignore
   git add .
   git commit -m 'Init'
@@ -68,7 +68,7 @@ t(){
 create_test t
 #-----------------
 DESC='Сделать слияние feature -> master, где в мастере нет коммитов.
-Посмотреть историю, отменить merge, сделать merge с дополнительным коммитом.'
+    Посмотреть историю, отменить merge, сделать merge с дополнительным коммитом.'
 x(){
   echo 'line' >> code
   git add .
@@ -101,7 +101,7 @@ t(){
 create_test t
 #-----------------
 DESC='Случайно сделал несколько коммитов в мастер, а надо было в feature.
-Перенести все fix коммиты в feature.'
+    Перенести все fix коммиты в feature.'
 x(){
   echo 'line' >> code
   git add .
@@ -117,7 +117,7 @@ t(){
 create_test t
 #-----------------
 DESC='Начал делать задачу Б прямо из ветки А, забыл переключиться в master.
-Сделать так, чтобы ветка по задаче Б была из ветки master'
+    Сделать так, чтобы ветка по задаче Б была из ветки master'
 
 x(){
   echo 'line' >> code
@@ -166,7 +166,7 @@ x(){
 }
 #-----------------
 DESC='Неправильно назвал ветку и поместил в репозиторий.
-Переименовать удалённую ветку в task-456.'
+    Переименовать удалённую ветку в task-456.'
 x(){
   git checkout -b task-123
   echo 'task 456' >> code
@@ -264,7 +264,7 @@ x(){
 }
 create_task x
 #-----------------
-DESC='Добавил изменения в stash, и очистил, как вернуть что было.'
+DESC='Добавил изменения в stash и очистил. Вернуть что было.'
 x(){
   git checkout -b feature
   echo 'work-in-progress' >> code
@@ -280,7 +280,7 @@ x(){
 }
 create_task x
 #-----------------
-DESC='Случайно сделал merge в master, и push. Сделать revert.'
+DESC='Случайно сделал merge в master, а затем push. Сделать revert.'
 x(){
   git checkout -b feature
   seq 3 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Feature {}'"

@@ -129,4 +129,6 @@ PS1+="\[${white}\] \$ \[${reset}\]"; # `$` (and reset color)
 
 # export PS1="Семинар по Git ( h for help ) \w\$ $git_branch"
 clear
-echo "Добро пожаловать на семинар по Git"
+echo "Добро пожаловать на семинар по Git!"
+echo
+cli help

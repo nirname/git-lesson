@@ -7,7 +7,7 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
-# COPY cli /cli
+COPY cli /cli
 # COPY tasks /tasks
 
 COPY .bashrc /root/
@@ -19,6 +19,6 @@ COPY bootstrap.sh .
 
 RUN chmod 700 ./bootstrap.sh && ./bootstrap.sh && rm ./bootstrap.sh # &>/dev/null
 
-# ENV PATH="/cli/:${PATH}"
+ENV PATH="/cli/:${PATH}"
 
 # ENTRYPOINT /bin/bash

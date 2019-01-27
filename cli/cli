@@ -1,77 +1,45 @@
 #!/usr/bin/env bash
-
 command=$1
 
 CLI_FOLDER="$( cd "$( dirname "$0" )" && pwd )"
-TASKS_FOLDER="$CLI_FOLDER/../tasks"
 PATH="$PATH:$CLI_FOLDER"
 
-TID_FILE="$CLI_FOLDER/tid"
-TID=${2:-`cat "$TID_FILE"`}
-TASK_FOLDER="$TASKS_FOLDER/$TID"
-TASK_FILE="$TASKS_FOLDER/task"
-
-function check_tid {
-  if ! [ -f $TASK_FILE ]; then
-    echo "Нет текущего задания" >&2
-    echo `$0 tasks` >&2
-    echo "Чтобы начать задание, выполните start с номером задачи"
-    exit 1
-  fi
-
-  if ! [ -d "$CLI_FOLDER/tid" ]; then
-    echo 1 > "$CLI_FOLDER/tid"
-  fi
-}
+TASKS_FOLDER="/tasks"
+TASK_FOLDER="$PWD"
+TASK_FILE="$TASK_FOLDER/task"
 
 case "$command" in
 
 help)
   echo "Доступные команды:
 
-    tasks       - Показать список задач
-    task [N]    - Показать текущую задачу или задачу с номером N
-    goto N      - Перейти к задаче N
+    list        - Показать список задач
+    task        - Показать текущую задачу или задачу с номером N
     next        - Перейти к следующей задаче
-    prev, back  - Перейти к предыдущей задаче
-    restart     - Начать задание заново
+    prev        - Перейти к предыдущей задаче
+    goto N      - Перейти к задаче N
 
-    h           - Показать подсказку"
+    h           - Показать эту подсказку"
 ;;
 
-tasks)
-  echo "Доступные задания: `ls $TASKS_FOLDER | tr "\n" " "`"
+list)
+  find $TASKS_FOLDER -name task | sort | xargs cat
 ;;
 
 task)
-  check_tid
-  echo "Задача $TID"
-  echo
-  cat "$TASK_FILE"
-;;
-
-goto)
-  check_tid
-  echo "Перехожу к задаче $TID"
-
-  echo $TID > "$TID_FILE"
-
-  $0 task
+  cat "$TASK_FILE" 2>/dev/null
 ;;
 
 next)
-  echo "Перехожу к следующей задаче"
+  $0 task
 ;;
 
 prev)
-  `$0 back`
+  $0 task
 ;;
 
-back)
-  echo "Перехожу к предыдущей задаче"
-;;
-
-restart)
+goto)
+  $0 task
 ;;
 
 *)
