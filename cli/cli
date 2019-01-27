@@ -31,11 +31,19 @@ task)
 ;;
 
 next)
-  $0 task
+  task_path="/tasks/$(ls -F /tasks | grep '/' | grep -A1 -xF "$(basename `pwd`)/" | tail -1)"
+  if [ $task_path = '/tasks/' ]; then
+    task_path="/tasks/$(ls -F /tasks | grep '/' | head -1 )"
+  fi
+  echo $task_path
 ;;
 
 prev)
-  $0 task
+  task_path="/tasks/$(ls -F /tasks | grep '/' | grep -B1 -xF "$(basename `pwd`)/" | head -1)"
+  if [ $task_path = '/tasks/' ]; then
+    task_path="/tasks/$(ls -F /tasks | grep '/' | tail -1 )"
+  fi
+  echo $task_path
 ;;
 
 goto)

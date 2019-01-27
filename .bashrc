@@ -128,6 +128,9 @@ PS1+="\[${white}\] \$ \[${reset}\]"; # `$` (and reset color)
 # export PS1;
 
 # export PS1="Семинар по Git ( h for help ) \w\$ $git_branch"
+alias next='cd $(cli next); task'
+alias prev='cd $(cli prev); task'
+
 clear
 echo "Добро пожаловать на семинар по Git!"
 echo
