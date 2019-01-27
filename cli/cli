@@ -30,7 +30,7 @@ task)
   cat "$TASK_FILE" 2>/dev/null
 ;;
 
-next)
+next-path)
   task_path="/tasks/$(ls -F /tasks | grep '/' | grep -A1 -xF "$(basename `pwd`)/" | tail -1)"
   if [ $task_path = '/tasks/' ]; then
     task_path="/tasks/$(ls -F /tasks | grep '/' | head -1 )"
@@ -38,7 +38,7 @@ next)
   echo $task_path
 ;;
 
-prev)
+prev-path)
   task_path="/tasks/$(ls -F /tasks | grep '/' | grep -B1 -xF "$(basename `pwd`)/" | head -1)"
   if [ $task_path = '/tasks/' ]; then
     task_path="/tasks/$(ls -F /tasks | grep '/' | tail -1 )"
