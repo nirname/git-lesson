@@ -1,7 +1,3 @@
-#!/usr/bin/env bash
-
-source "/root/.git_completion"
-
 # Shell prompt based on the Solarized Dark theme.
 # Screenshot: http://i.imgur.com/EkEtphC.png
 # Heavily inspired by @necolas’s prompt: https://github.com/necolas/dotfiles
@@ -125,16 +121,6 @@ PS1+="\[${green}\]\w"; # working directory full path
 PS1+="\$(prompt_git \"\[${white}\] \[${violet}\][\" \"]\[${yellow}\]\")"; # Git repository details
 # PS1+="\n";
 PS1+="\[${white}\] \$ \[${reset}\]"; # `$` (and reset color)
-# export PS1;
+export PS1;
 
 # export PS1="Семинар по Git ( h for help ) \w\$ $git_branch"
-alias next='cd $(cli next-path); task'
-alias prev='cd $(cli prev-path); task'
-alias list='cli list'
-alias h='cli help'
-alias task='cli task'
-
-clear
-echo "Добро пожаловать на семинар по Git!"
-echo
-cli help

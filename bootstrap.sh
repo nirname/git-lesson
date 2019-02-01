@@ -148,6 +148,7 @@ x(){
   git merge --no-ff feature
   git push -u origin master
 }
+create_task x
 #-----------------
 DESC='Сделал локальный коммит с неправильным описанием, надо поправить.'
 x(){
@@ -315,9 +316,12 @@ x(){
 }
 create_task x
 #-----------------
-# DESC='Не могу сделать pull, файлы в локальном репозитории.'
-# x(){
-#   git che
-# }
+DESC='TODO Не могу сделать pull, файлы в локальном репозитории.'
+x(){
+  echo 'line' >> code
+  git add .
+  git commit -m 'Code in master'
+}
+create_task x
 # test $(git cat-file -t 3ea34ff5db454600f582fa93111b0e24e8ea639a) == commit
 # echo $?
