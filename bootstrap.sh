@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 N=9
 #-----------------
 DESC='Задание'
@@ -13,7 +12,7 @@ create_task(){
   N=$((N+1))
   git init $N && cd $N
   echo "$N. $DESC" >> task
-  echo "test" >> .gitignore
+  # echo "test" >> .gitignore
   git add .
   git commit -m 'Init'
   create_remote origin
@@ -23,8 +22,7 @@ create_task(){
 }
 
 create_test(){
-  cd $N
-  echo "#!/usr/bin/env bash" >> test
+  echo "#!/usr/bin/env bash" > test
   $1
   echo '
   res=$?
@@ -35,16 +33,15 @@ create_test(){
   fi
   exit $res' >> test
   chmod 744 test
-  cd ../
 }
 #-----------------
 DESC='Сделать коммит.'
 x(){ :; }
 create_task x
-t(){
-  echo "test \$(git rev-list `git rev-parse HEAD`..master | wc -l) == 1" >> test
-}
-create_test t
+# t(){
+#   echo "test \$(git rev-list `git rev-parse HEAD`..master | wc -l) == 1" >> test
+# }
+# create_test t
 #-----------------
 DESC='Сделать слияние feature -> master, где в мастере есть коммит. Посмотреть историю.'
 x(){
@@ -62,10 +59,10 @@ x(){
   git checkout feature
 }
 create_task x
-t(){
-  echo "test \$(git branch --merged master | grep -oE '[^[:alpha:]][^[:alpha:]]feature$' | sort -u | wc -l) == 1" >> test
-}
-create_test t
+# t(){
+#   echo "test \$(git branch --merged master | grep -oE '[^[:alpha:]][^[:alpha:]]feature$' | sort -u | wc -l) == 1" >> test
+# }
+# create_test t
 #-----------------
 DESC='Сделать слияние feature -> master, где в мастере нет коммитов.
     Посмотреть историю, отменить merge, сделать merge с дополнительным коммитом.'
@@ -79,10 +76,10 @@ x(){
   git commit -m 'Module in branch'
 }
 create_task x
-t(){
-  echo "test \$(git rev-list --merges --count master~1..master) == 1" >> test
-}
-create_test t
+# t(){
+#   echo "test \$(git rev-list --merges --count master~1..master) == 1" >> test
+# }
+# create_test t
 #-----------------
 DESC='Случайно сделал коммит в мастер, а надо было в feature. Перенести в feature.'
 x(){
@@ -95,10 +92,10 @@ x(){
   git commit -m 'Code in feature'
 }
 create_task x
-t(){
-  echo "git rev-list master..feature | grep -Fxq `git rev-parse master`" >> test
-}
-create_test t
+# t(){
+#   echo "git rev-list master..feature | grep -Fxq `git rev-parse master`" >> test
+# }
+# create_test t
 #-----------------
 DESC='Случайно сделал несколько коммитов в мастер, а надо было в feature.
     Перенести все fix коммиты в feature.'
@@ -111,10 +108,10 @@ x(){
   seq 4 | xargs -I{} bash -c "echo 'line {} for feature' >> code; git add .; git commit -m 'Fix {}'"
 }
 create_task x
-t(){
-  echo "git rev-list master..feature | grep -Fxq `git rev-parse master`" >> test
-}
-create_test t
+# t(){
+#   echo "git rev-list master..feature | grep -Fxq `git rev-parse master`" >> test
+# }
+# create_test t
 #-----------------
 DESC='Начал делать задачу Б прямо из ветки А, забыл переключиться в master.
     Сделать так, чтобы ветка по задаче Б была из ветки master'
@@ -180,26 +177,10 @@ create_task x
 DESC='Запушили пароли в репозитарий, надо почистить историю.'
 x(){
   seq 1 7 | xargs -I{} bash -c "echo 'code-line-{}' >> code; git add .; git commit -m 'Wip {}'"
-  echo "Yai8Ahg3
-Eo4faika
-theewama
-Sahthais
-lee9Guuj
-airooy5A
-ieGhio1j
-Shie0ahr" > passwords
+  pwgen 10 8 > passwords
   git add . passwords
   seq 8 15 | xargs -I{} bash -c "echo 'code-line-{}' >> code; git add .; git commit -m 'Wip {}'"
-  echo "mee4ePei
-AeQu3aeR
-Eiz9zebu
-ieyai2Ao
-OhboGh1e
-awakieM4
-No8iepoo
-doo2eiVi
-atahph3H
-ach5jaiG" >> passwords
+  pwgen 10 10 >> passwords
   seq 16 20 | xargs -I{} bash -c "echo 'code-line-{}' >> code; git add .; git commit -m 'Wip {}'"
   # git rm passwords
   # git add .
@@ -323,5 +304,18 @@ x(){
   git commit -m 'Code in master'
 }
 create_task x
-# test $(git cat-file -t 3ea34ff5db454600f582fa93111b0e24e8ea639a) == commit
-# echo $?
+#-----------------
+DESC='TODO: В каком-то из коммитов сломали тесты. Найти нужный коммит'
+x(){
+  local q=$(((RANDOM % 100) + 1))
+  local shebang="#!/usr/bin/env bash"
+  echo $shebang | tee code test
+  echo -n ":" >> test
+  chmod 744 code test; git add .; git commit -m 'Started coding'
+  git push -u origin master;
+  pwgen 10 $q -1          | xargs -I{} bash -c "echo 'echo \"{}\"' >> code; echo -n ' && ./code | grep -Fxq {}' >> test; git add .; git commit -m 'Wip'"
+  local err="`pwgen 10 1 -1`"
+  echo $err               | xargs -I{} bash -c "echo 'echo \"`pwgen 10 1 -1`\"' >> code; echo -n ' && ./code | grep -Fxq {}' >> test; git add .; git commit -m 'Wip'"
+  pwgen 10 $((99 - q)) -1 | xargs -I{} bash -c "echo 'echo \"{}\"' >> code; echo -n ' && ./code | grep -Fxq {}' >> test; git add .; git commit -m 'Wip'"
+}
+create_task x
