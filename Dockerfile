@@ -8,12 +8,7 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
 COPY cli /cli
-# COPY tasks /tasks
-
 COPY /dotfiles/* /root/
-# COPY .gitconf /root/.gitconfig
-# COPY .git_completion /root/
-# COPY .bash_prompt /root/
 
 WORKDIR /tasks
 COPY bootstrap.sh .
@@ -21,5 +16,3 @@ COPY bootstrap.sh .
 RUN chmod 700 ./bootstrap.sh && ./bootstrap.sh && rm ./bootstrap.sh # &>/dev/null
 
 ENV PATH="/cli/:${PATH}"
-
-# ENTRYPOINT /bin/bash

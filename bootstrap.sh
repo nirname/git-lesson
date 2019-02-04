@@ -38,10 +38,6 @@ create_test(){
 DESC='Сделать коммит.'
 x(){ :; }
 create_task x
-# t(){
-#   echo "test \$(git rev-list `git rev-parse HEAD`..master | wc -l) == 1" >> test
-# }
-# create_test t
 #-----------------
 DESC='Сделать слияние feature -> master, где в мастере есть коммит. Посмотреть историю.'
 x(){
@@ -59,10 +55,6 @@ x(){
   git checkout feature
 }
 create_task x
-# t(){
-#   echo "test \$(git branch --merged master | grep -oE '[^[:alpha:]][^[:alpha:]]feature$' | sort -u | wc -l) == 1" >> test
-# }
-# create_test t
 #-----------------
 DESC='Сделать слияние feature -> master, где в мастере нет коммитов.
     Посмотреть историю, отменить merge, сделать merge с дополнительным коммитом.'
@@ -76,10 +68,6 @@ x(){
   git commit -m 'Module in branch'
 }
 create_task x
-# t(){
-#   echo "test \$(git rev-list --merges --count master~1..master) == 1" >> test
-# }
-# create_test t
 #-----------------
 DESC='Случайно сделал коммит в мастер, а надо было в feature. Перенести в feature.'
 x(){
@@ -92,10 +80,6 @@ x(){
   git commit -m 'Code in feature'
 }
 create_task x
-# t(){
-#   echo "git rev-list master..feature | grep -Fxq `git rev-parse master`" >> test
-# }
-# create_test t
 #-----------------
 DESC='Случайно сделал несколько коммитов в мастер, а надо было в feature.
     Перенести все fix коммиты в feature.'
@@ -108,10 +92,6 @@ x(){
   seq 4 | xargs -I{} bash -c "echo 'line {} for feature' >> code; git add .; git commit -m 'Fix {}'"
 }
 create_task x
-# t(){
-#   echo "git rev-list master..feature | grep -Fxq `git rev-parse master`" >> test
-# }
-# create_test t
 #-----------------
 DESC='Начал делать задачу Б прямо из ветки А, забыл переключиться в master.
     Сделать так, чтобы ветка по задаче Б была из ветки master'
@@ -131,7 +111,7 @@ x(){
 }
 create_task x
 #-----------------
-DESC='TODO: Случайно сделал merge и push. Надо отменить merge.'
+DESC='TODO: Случайно сделал merge --no-ff и push. Надо отменить merge.'
 x(){
   echo 'line' >> code
   git add .
@@ -164,7 +144,7 @@ x(){
 }
 #-----------------
 DESC='Неправильно назвал ветку и поместил в репозиторий.
-    Переименовать удалённую ветку в task-456.'
+    Переименовать удалённую ветку.'
 x(){
   git checkout -b task-123
   echo 'task 456' >> code
@@ -197,7 +177,7 @@ x(){
 create_task x
 t(){ :; }
 #-----------------
-DESC='Неправильный автоматический merge'
+DESC='TODO: change committers; Неправильный автоматический merge'
 x(){
   echo '#!/usr/bin/env bash
 func5(){ echo 5; }
@@ -297,7 +277,7 @@ x(){
 }
 create_task x
 #-----------------
-DESC='TODO Не могу сделать pull, файлы в локальном репозитории.'
+DESC='TODO: Не могу сделать pull, файлы в локальном репозитории.'
 x(){
   echo 'line' >> code
   git add .
@@ -305,7 +285,7 @@ x(){
 }
 create_task x
 #-----------------
-DESC='TODO: В каком-то из коммитов сломали тесты. Найти нужный коммит'
+DESC='В каком-то из коммитов сломали тесты. Найти нужный коммит'
 x(){
   local q=$(((RANDOM % 100) + 1))
   local shebang="#!/usr/bin/env bash"
