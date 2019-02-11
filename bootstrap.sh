@@ -11,7 +11,8 @@ create_remote(){
 create_task(){
   N=$((N+1))
   git init $N && cd $N
-  echo "$N. $DESC" >> task
+  # echo "$N. $DESC" >> task
+  echo "$DESC" >> task
   # echo "test" >> .gitignore
   git add .
   git commit -m 'Init'
@@ -177,7 +178,7 @@ x(){
 create_task x
 t(){ :; }
 #-----------------
-DESC='TODO: change committers; Неправильный автоматический merge'
+DESC='Неправильный автоматический merge'
 x(){
   echo '#!/usr/bin/env bash
 func5(){ echo 5; }
@@ -199,10 +200,20 @@ func5
 }
 create_task x
 
-# git config user.name 'bob'
-# git config user.email 'bob'
-cp -r /tasks/$N /tasks/$N-bob
-mv /tasks/$N /tasks/$N-alice
+git clone /repo/$N /tasks/$N-alice
+cd /tasks/$N-alice
+git config user.name 'Alice'
+git config user.email 'alice@example.com'
+cd ../
+
+git clone /repo/$N /tasks/$N-bob
+cd /tasks/$N-bob
+git config user.name 'Bob'
+git config user.email 'bob@example.com'
+cd ../
+
+rm -rf /tasks/$N
+
 # hello(){ echo 'hello' }
 # hello(){ echo 'hell' }
 # echo "`git rev-parse master` `git rev-parse module-1` `git rev-parse module-2` `git rev-parse module-3`"

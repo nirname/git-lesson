@@ -22,11 +22,15 @@ help)
 ;;
 
 list)
-  find $TASKS_FOLDER -name task | sort | xargs cat
+  find $TASKS_FOLDER -name task | sort | xargs -I{} sh -c "dirname {} | xargs basename | xargs -I{} echo -n '{}. '; cat {}"
+  # find $TASKS_FOLDER -name task | sort | xargs -I{} sh -c "dirname {} | xargs basename | xargs  echo; cat {}"
 ;;
 
 task)
-  cat "$TASK_FILE" 2>/dev/null
+  if [ -f task ]; then
+    echo -n "`pwd | xargs basename`. " 2>/dev/null
+    cat "$TASK_FILE" 2>/dev/null
+  fi
 ;;
 
 next-path)
