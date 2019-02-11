@@ -49,6 +49,7 @@ x(){
   echo 'line' >> code
   git add .
   git commit -m 'Code in master'
+  git push -u origin master
   git checkout -b feature
   echo 'line' >> module
   git add .
@@ -67,6 +68,7 @@ x(){
   echo 'line' >> code
   git add .
   git commit -m 'Code in master'
+  git push -u origin master
   git checkout -b feature
   echo 'line' >> module
   git add .
@@ -79,6 +81,7 @@ x(){
   echo 'line' >> code
   git add .
   git commit -m 'Code in master'
+  git push -u origin master
   git branch feature
   echo 'line for feature' >> code
   git add .
@@ -94,7 +97,7 @@ x(){
   git commit -m 'Code'
   git push -u origin master
   git branch feature
-  seq 4 | xargs -I{} bash -c "echo 'line {} for feature' >> code; git add .; git commit -m 'Fix {}'"
+  seq 4 | xargs -I{} bash -c "echo 'line {} for feature' >> code; git add .; git commit -m 'Wip {}'"
 }
 create_task x
 #-----------------
@@ -105,6 +108,7 @@ x(){
   echo 'line' >> code
   git add .
   git commit -m 'Code'
+  git push -u origin master
   git checkout -b feature-a
   echo 'module_a.call()' >> code
   git commit -am 'Feature A call'
@@ -133,6 +137,7 @@ x(){
   git commit -m 'wROnG Msg'
   git push -u origin master
 }
+create_task x
 #-----------------
 DESC='Неправильно назвал ветку и поместил в репозиторий.
     Переименовать удалённую ветку.'
@@ -161,13 +166,6 @@ x(){
 create_task x
 #-----------------
 # Слияние
-#-----------------
-DESC='Слить несколько веток в одну одним коммитом.'
-x(){
-  seq 3 | xargs -I{} bash -c "git checkout master; git checkout -b module-{}; echo 'module_{}' >> module_{}; git add .; git commit -m 'Module {}'"
-  git checkout master
-}
-create_task x
 #-----------------
 DESC='Неправильный автоматический merge'
 x(){
@@ -210,6 +208,13 @@ rm -rf /tasks/$N
 # echo "`git rev-parse master` `git rev-parse module-1` `git rev-parse module-2` `git rev-parse module-3`"
 # if [ "valid" = "valid" ]; then echo 't'; fi
 # git show -s --pretty=%P <commit>
+#-----------------
+DESC='Слить несколько веток в одну одним коммитом.'
+x(){
+  seq 3 | xargs -I{} bash -c "git checkout master; git checkout -b module-{}; echo 'module_{}' >> module_{}; git add .; git commit -m 'Module {}'"
+  git checkout master
+}
+create_task x
 #-----------------
 DESC='DUP: Случайно сделал merge --no-ff и push. Надо отменить merge.'
 x(){
