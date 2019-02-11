@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 N=9
 #-----------------
+# Функции
+#-----------------
 DESC='Задание'
 create_remote(){
   mkdir -p /repo
@@ -35,6 +37,8 @@ create_test(){
   exit $res' >> test
   chmod 744 test
 }
+#-----------------
+# Перенос коммитов и веток
 #-----------------
 DESC='Сделать коммит.'
 x(){ :; }
@@ -83,7 +87,7 @@ x(){
 create_task x
 #-----------------
 DESC='Случайно сделал несколько коммитов в мастер, а надо было в feature.
-    Перенести все fix коммиты в feature.'
+    Перенести все нужные коммиты в feature.'
 x(){
   echo 'line' >> code
   git add .
@@ -112,21 +116,7 @@ x(){
 }
 create_task x
 #-----------------
-DESC='TODO: Случайно сделал merge --no-ff и push. Надо отменить merge.'
-x(){
-  echo 'line' >> code
-  git add .
-  git commit -m 'Code'
-  git branch feature
-  seq 4 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Fix in master {}'"
-  git push -u origin master
-  git chekcout feature
-  seq 4 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'For feature {}'"
-  git checkout master
-  git merge --no-ff feature
-  git push -u origin master
-}
-create_task x
+# Наименование и изменения в удалённом репозитории
 #-----------------
 DESC='Сделал локальный коммит с неправильным описанием, надо поправить.'
 x(){
@@ -136,7 +126,7 @@ x(){
 }
 create_task x
 #-----------------
-DESC='TODO: Сделал коммит, запушил, надо переименовать'
+DESC='Сделал коммит, запушил, надо переименовать'
 x(){
   echo 'line' >> code
   git add .
@@ -170,13 +160,14 @@ x(){
 }
 create_task x
 #-----------------
+# Слияние
+#-----------------
 DESC='Слить несколько веток в одну одним коммитом.'
 x(){
   seq 3 | xargs -I{} bash -c "git checkout master; git checkout -b module-{}; echo 'module_{}' >> module_{}; git add .; git commit -m 'Module {}'"
   git checkout master
 }
 create_task x
-t(){ :; }
 #-----------------
 DESC='Неправильный автоматический merge'
 x(){
@@ -220,36 +211,19 @@ rm -rf /tasks/$N
 # if [ "valid" = "valid" ]; then echo 't'; fi
 # git show -s --pretty=%P <commit>
 #-----------------
-DESC='Понял, что всё что было сделано локально - ужас. Вернуть до состояния удалённого репозитория'
+DESC='DUP: Случайно сделал merge --no-ff и push. Надо отменить merge.'
 x(){
-  echo 'work' >> code; git add .; git commit -m 'Work'
-}
-#-----------------
-DESC='Случайно сделал reset --hard, спасти что было.'
-x(){
-  echo 'work' >> code; git add .; git commit -m 'Fix'
+  echo 'line' >> code
+  git add .
+  git commit -m 'Code'
+  git branch feature
+  seq 4 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Fix in master {}'"
   git push -u origin master
-  git checkout -b feature
-  seq 3 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Wip {}'"
-  git reset --hard master
-  git checkout master
-  git br -D feature
-}
-create_task x
-#-----------------
-DESC='Добавил изменения в stash и очистил. Вернуть что было.'
-x(){
-  git checkout -b feature
-  echo 'work-in-progress' >> code
-  git add .
-  git stash
-  git co master
-  echo 'fix' >> code
-  git add .
-  git commit -m Fix
-  git push
   git checkout feature
-  # git stash clear
+  seq 4 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'For feature {}'"
+  git checkout master
+  git merge --no-ff feature
+  git push -u origin master
 }
 create_task x
 #-----------------
@@ -280,11 +254,46 @@ x(){
 }
 create_task x
 #-----------------
-DESC='Случайно сделал коммиты в мастер и запушил, а надо было в feature, сделать revert.'
+DESC='TODO: Случайно сделал коммиты в мастер и запушил, а надо было в feature, сделать revert.'
 x(){
   # git clone /repo/$N /tmp/
   seq 3 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Feature {}'"
   git push -u origin master
+}
+create_task x
+#-----------------
+# Сброс изменений и восстановление
+#-----------------
+DESC='Понял, что всё что было сделано локально - ужас. Вернуть до состояния удалённого репозитория'
+x(){
+  echo 'work' >> code; git add .; git commit -m 'Work'
+}
+#-----------------
+DESC='Случайно сделал reset --hard, спасти что было.'
+x(){
+  # echo 'work' >> code; git add .; git commit -m 'Fix'
+  # git push -u origin master
+  git checkout -b feature
+  seq 3 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Wip {}'"
+  git reset --hard master
+  # git checkout master
+  # git br -D feature
+}
+create_task x
+#-----------------
+DESC='Добавил изменения в stash и очистил. Вернуть что было.'
+x(){
+  git checkout -b feature
+  echo 'work-in-progress' >> code
+  git add .
+  git stash
+  git co master
+  echo 'fix' >> code
+  git add .
+  git commit -m Fix
+  git push
+  git checkout feature
+  # git stash clear
 }
 create_task x
 #-----------------

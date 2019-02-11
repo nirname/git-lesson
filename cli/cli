@@ -23,7 +23,7 @@ help)
 
 list)
   find $TASKS_FOLDER -name task | sort | xargs -I{} sh -c "dirname {} | xargs basename | xargs -I{} echo -n '{}. '; cat {}"
-  # find $TASKS_FOLDER -name task | sort | xargs -I{} sh -c "dirname {} | xargs basename | xargs  echo; cat {}"
+  # find $TASKS_FOLDER -name task | sort | xargs cat
 ;;
 
 task)
