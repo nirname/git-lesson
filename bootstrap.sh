@@ -150,7 +150,7 @@ x(){
 }
 create_task x
 #-----------------
-DESC='Запушили пароли в репозитарий, надо почистить историю.'
+DESC='Поместили пароли в репозитарий, надо почистить историю.'
 x(){
   seq 1 7 | xargs -I{} bash -c "echo 'code-line-{}' >> code; git add .; git commit -m 'Wip {}'"
   pwgen 10 8 > passwords
@@ -216,26 +216,13 @@ x(){
 }
 create_task x
 #-----------------
-DESC='DUP: Случайно сделал merge --no-ff и push. Надо отменить merge.'
+DESC='Случайно сделал merge --no-ff и push. Отменить.'
 x(){
-  echo 'line' >> code
-  git add .
-  git commit -m 'Code'
   git branch feature
-  seq 4 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Fix in master {}'"
+  seq 3 | xargs -I{} bash -c "echo 'hotfix {}' >> code; git add .; git commit -m 'Hotfix {}'"
   git push -u origin master
   git checkout feature
-  seq 4 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'For feature {}'"
-  git checkout master
-  git merge --no-ff feature
-  git push -u origin master
-}
-create_task x
-#-----------------
-DESC='Случайно сделал merge в master, а затем push. Сделать revert.'
-x(){
-  git checkout -b feature
-  seq 3 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Feature {}'"
+  seq 3 | xargs -I{} bash -c "echo 'line {}' >> module; git add .; git commit -m 'Feature {}'"
   git checkout master
   git merge --no-ff feature
   git push -u origin master
@@ -244,28 +231,41 @@ create_task x
 #-----------------
 DESC='Сделал revert в мастер, продолжаю работу, хочу снова сделать merge.'
 x(){
-  git checkout -b feature
-  seq 3 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Feature {}'"
+  git branch feature
+  seq 3 | xargs -I{} bash -c "echo 'hotfix {}' >> code; git add .; git commit -m 'Hotfix {}'"
+  git push -u origin master
+  git checkout feature
+  seq 3 | xargs -I{} bash -c "echo 'line {}' >> module; git add .; git commit -m 'Feature {}'"
   git checkout master
   git merge --no-ff feature
   git push -u origin master
+
   git checkout -b revert-feature
   git revert -m 1 master --no-edit master
   git checkout master
   git merge --no-ff revert-feature
   git push -u origin master
   git checkout feature
-  seq 4 5 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Feature {}'"
+  seq 4 5 | xargs -I{} bash -c "echo 'line {}' >> module; git add .; git commit -m 'Feature {}'"
 }
 create_task x
 #-----------------
-DESC='TODO: Случайно сделал коммиты в мастер и запушил, а надо было в feature, сделать revert.'
-x(){
-  # git clone /repo/$N /tmp/
-  seq 3 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Feature {}'"
-  git push -u origin master
-}
-create_task x
+# DESC='Случайно сделал fast-forward merge, а затем push. Отменить.'
+# x(){
+#   git checkout -b feature
+#   seq 3 | xargs -I{} bash -c "echo 'line {}' >> module; git add .; git commit -m 'Feature {}'"
+#   git checkout master
+#   git merge feature
+#   git push -u origin master
+# }
+# create_task x
+# #-----------------
+# DESC='TODO: Случайно сделал коммиты в мастер и запушил, а надо было в feature, сделать revert.'
+# x(){
+#   seq 3 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Feature {}'"
+#   git push -u origin master
+# }
+# create_task x
 #-----------------
 # Сброс изменений и восстановление
 #-----------------
