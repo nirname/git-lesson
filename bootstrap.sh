@@ -276,41 +276,65 @@ x(){
 #-----------------
 DESC='Случайно сделал reset --hard, спасти что было.'
 x(){
-  # echo 'work' >> code; git add .; git commit -m 'Fix'
-  # git push -u origin master
   git checkout -b feature
   seq 3 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Wip {}'"
   git reset --hard master
-  # git checkout master
-  # git br -D feature
+}
+create_task x
+#-----------------
+DESC='Случайно сделал удалил ветку, спасти что было.'
+x(){
+  git checkout -b feature
+  seq 3 | xargs -I{} bash -c "echo 'line {}' >> code; git add .; git commit -m 'Wip {}'"
+  git checkout master
+  git br -D feature
+}
+create_task x
+#-----------------
+DESC='Не могу сделать pull, изменения в локальном репозитории.'
+x(){
+  echo 'say1(){ echo 1; }' > code
+  git add .
+  git commit -m 'Some code'
+  git push -u origin master
+  git clone /repo/$N/ /tmp/$N
+  cd /tmp/$N
+  git config user.name 'Teamlead'
+  git config user.email 'teamlead@example.com'
+  echo 'say2(){ echo 2; }' >> code
+  git add .
+  git commit -m 'New function'
+  git push -u origin master
+  rm -rf /tmp/$N
+  cd /tasks/$N
+  echo -e 'prototype\ncontaining\nmultiple\nlines' >> code
 }
 create_task x
 #-----------------
 DESC='Добавил изменения в stash и очистил. Вернуть что было.'
 x(){
-  git checkout -b feature
-  echo 'work-in-progress' >> code
+  echo 'say1(){ echo 1; }' > code
   git add .
-  git stash
-  git co master
-  echo 'fix' >> code
+  git commit -m 'Some code'
+  git push -u origin master
+  git clone /repo/$N/ /tmp/$N
+  cd /tmp/$N
+  git config user.name 'Teamlead'
+  git config user.email 'teamlead@example.com'
+  echo 'say2(){ echo 2; }' >> code
   git add .
-  git commit -m Fix
-  git push
-  git checkout feature
-  # git stash clear
+  git commit -m 'New function'
+  git push -u origin master
+  rm -rf /tmp/$N
+  cd /tasks/$N
+  echo -e 'prototype\ncontaining\nmultiple\nlines' >> code
+  git stash save 'Some experiments'
+  git pull --rebase master
+  git stash clear
 }
 create_task x
 #-----------------
-DESC='TODO: Не могу сделать pull, файлы в локальном репозитории.'
-x(){
-  echo 'line' >> code
-  git add .
-  git commit -m 'Code in master'
-}
-create_task x
-#-----------------
-DESC='В каком-то из коммитов сломали тесты. Найти нужный коммит'
+DESC='В каком-то из коммитов сломали тесты. Найти нужный коммит.'
 x(){
   local q=$(((RANDOM % 100) + 1))
   local shebang="#!/usr/bin/env bash"
