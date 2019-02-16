@@ -136,6 +136,15 @@ x(){
   git add .
   git commit -m 'wROnG Msg'
   git push -u origin master
+  git clone /repo/$N /tmp/$N
+  cd /tmp/$N
+  git config user.name 'Teamleader'
+  git config user.email 'teamleader@example.com'
+  touch module && git add . && git commit -m Module
+  git push -u origin master
+  cd /tasks/$N
+  rm -rf /tmp/$N
+  git fetch
 }
 create_task x
 #-----------------
@@ -143,9 +152,9 @@ DESC='Неправильно назвал ветку и поместил в ре
     Переименовать удалённую ветку.'
 x(){
   git checkout -b task-123
-  echo 'task 456' >> code
+  echo 'module' >> code
   git add .
-  git commit -m 'Task 456'
+  git commit -m 'task-456: new module'
   git push -u origin task-123
 }
 create_task x
@@ -273,6 +282,7 @@ DESC='Понял, что всё что было сделано локально 
 x(){
   echo 'work' >> code; git add .; git commit -m 'Work'
 }
+create_task x
 #-----------------
 DESC='Случайно сделал reset --hard, спасти что было.'
 x(){
